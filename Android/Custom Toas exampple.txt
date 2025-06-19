@@ -1,0 +1,133 @@
+Steps for Implementation of Custom Toast In Android:-
+Step 1: Firstly Retrieve the Layout Inflater  with  getLayoutInflater()  (or getSystemService()) and then inflate the layout from XML using inflate(int, ViewGroup). In inflate method first parameter is the layout resource ID and the second is the root View.
+
+Step 2: Create a new Toast with Toast(Context) and set some properties of the Toast, such as the duration and gravity.
+
+Step 3: Call setView(View) and pass the inflated layout in this method.
+
+Step 4: Display the Toast on the screen using show() method of Toast.
+___________________________________________________________________________________________
+
+In the below example we have shown the functioning of Toast and custom Toast both.
+
+Step 1: Create a new project and name it ToastExample
+
+Step 2:  Open res -> layout ->activity_main.xml (or) main.xml and add following code:
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:paddingBottom="@dimen/activity_vertical_margin"
+android:paddingLeft="@dimen/activity_horizontal_margin"
+android:paddingRight="@dimen/activity_horizontal_margin"
+android:paddingTop="@dimen/activity_vertical_margin"
+tools:context=".MainActivity">
+<!-- Button's for simple and custom Toast -->
+<Button
+android:id="@+id/simpleToast"
+android:layout_width="200dp"
+android:layout_height="wrap_content"
+android:layout_centerHorizontal="true"
+android:layout_marginTop="150dp"
+android:background="#f00"
+android:text="Simple Toast"
+android:textColor="#fff"
+android:textSize="20sp" />
+
+<Button
+android:id="@+id/customToast"
+android:layout_width="200dp"
+android:layout_height="wrap_content"
+android:layout_below="@+id/simpleToast"
+android:layout_centerHorizontal="true"
+android:layout_margin="50dp"
+android:background="#0f0"
+android:text="Custom Toast"
+android:textColor="#fff"
+android:textSize="20sp" />
+
+</RelativeLayout>
+_______________________________________________________________________________________
+Step 3:  Now create a xml layouts by right clicking on res/layout -> New -> Layout Resource File and name it custom_toast_layout.xml
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:id="@+id/toast_layout_root"
+android:layout_width="fill_parent"
+android:layout_height="fill_parent"
+android:background="#DAAA"
+android:orientation="horizontal"
+android:padding="8dp">
+<!-- ImageVView and TextView for custom Toast -->
+<ImageView
+android:id="@+id/toastImageView"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:src="@drawable.ic_launcher"
+android:layout_marginRight="8dp" />
+
+<TextView
+android:id="@+id/toastTextView"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:textColor="#FFF"
+android:text="Custom Toast In Android" />
+</LinearLayout>
+_____________________________________
+MainActivity.java
+
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.Button;
+import android.view.ViewGroup;
+
+public class MainActivity extends AppCompatActivity {
+
+    Button simpleToast, customToast;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        // get the reference of Button's
+        simpleToast = (Button) findViewById(R.id.simpleToast);
+        customToast = (Button) findViewById(R.id.customToast);
+        // perform setOnClickListener event on simple Toast Button
+        simpleToast.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // initiate a Toast with message and duration
+                Toast toast = Toast.makeText(getApplicationContext(), "Simple Toast In Android", Toast.LENGTH_LONG);
+		 // initiate the Toast with context, message and duration for the Toast
+                toast.setGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);     // set gravity for the Toast.
+                toast.show(); // display the Toast
+
+            }
+        });
+        // perform setOnClickListener event on custom Toast Button
+        customToast.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Creating the LayoutInflater object
+
+                LayoutInflater inflater = getLayoutInflater();
+		//Getting view object as defined in the custom_toast_layout.xml
+
+                View layout = inflater.inflate(R.layout.custom_toast_layout,(ViewGroup) findViewById(R.id.toast_layout_root));
+                               
+                // create a new Toast object
+                Toast toast = new Toast(getApplicationContext());
+                toast.setDuration(Toast.LENGTH_LONG); // set the duration for the Toast
+                toast.setView(layout); // set the inflated layout
+                toast.show(); // display the custom Toast
+
+            }
+        });
+    }
+}

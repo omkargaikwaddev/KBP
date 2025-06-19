@@ -1,0 +1,92 @@
+We will define a ListView in the main layout XML file activity_main.xml.
+
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFEB3B"
+    tools:context="com.example.android.studytonightandroid.MainActivity">
+    
+    <GridView
+        android:id="@+id/gridView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:verticalSpacing="10dp"
+        android:horizontalSpacing="10dp"
+        android:numColumns="2"/>
+        
+</android.support.constraint.ConstraintLayout>
+________________________________________________________________________________
+As our Grid will have only text values, hence we must define a TextView.
+So now we will create a new XML file, with name grid_item.xml in the layout folder, and add a TextView in it like this,
+
+<?xml version="1.0" encoding="utf-8"?> 
+ <TextView xmlns:android="http://schemas.android.com/apk/res/android"  
+    android:id="@+id/text"  
+    android:layout_width="wrap_content"  
+    android:layout_height="wrap_content"
+    android:textStyle="bold" 
+    android:layout_marginLeft="10dp"  
+    android:layout_marginTop="5dp"  
+    android:padding="4dp"  
+    android:textColor="#000000"  
+    />
+__________________________________________________________________________
+And the MainActivity.java file will look like this:
+
+package listview.studytonightexample.com.listview;  
+  
+import android.support.v7.app.AppCompatActivity;  
+import android.os.Bundle;  
+import android.view.View;  
+import android.widget.AdapterView;  
+import android.widget.ArrayAdapter;  
+import android.widget.ListView;  
+import android.widget.TextView;  
+import android.widget.Toast;  
+  
+public class MainActivity extends AppCompatActivity {  
+    GridView gridView;  
+    TextView textView;  
+    String[] carBrands = {
+        "Ferrari",
+        "McLaren",
+        "Jaguar",
+        "Skoda",
+        "Suzuki",
+        "Hyundai",
+        "Toyota",
+        "Renault",
+        "Mercedes",
+        "BMW",
+        "Ford",
+        "Honda",
+        "Chevrolet",
+        "Volkswagon",
+    };
+    
+    @Override  
+    protected void onCreate(Bundle savedInstanceState) {  
+        super.onCreate(savedInstanceState);  
+        setContentView(R.layout.activity_main);  
+  
+        gridView = (GridView)findViewById(R.id.gridView);  
+        textView = (TextView)findViewById(R.id.textView);  
+         
+        final ArrayAdapter adapter = new ArrayAdapter(this,android.R.layout.grid_item, android.R.id.text, carBrands);  
+                
+        gridView.setAdapter(adapter);  
+  
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {  
+            @Override  
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {  
+                // TODO Auto-generated method stub  
+                
+                /* appending I Love with car brand names */
+                String value = "I Love " + adapter.getItem(position);  
+                /* Display the Toast */
+                Toast.makeText(getApplicationContext(), value, Toast.LENGTH_SHORT).show();  
+            }  
+        });  
+    }  
+}

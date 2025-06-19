@@ -1,0 +1,90 @@
+LOGIN Validation:
+
+<?xml version="1.0" encoding="utf-8"?>
+<AbsoluteLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+    <TextView
+        android:id="@+id/t1"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:layout_x="23dp"
+        android:layout_y="66dp"
+        android:text="Username"
+        android:textSize="20dp" />
+    <TextView
+        android:id="@+id/t2"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:layout_x="22dp"
+        android:layout_y="143dp"
+        android:text="Password"
+        android:textSize="20dp" />
+    <EditText
+        android:id="@+id/et1"
+        android:layout_width="213dp"
+        android:layout_height="wrap_content"
+        android:layout_x="144dp"
+        android:layout_y="51dp"
+        android:text="" />
+    <Button
+        android:id="@+id/b1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_x="149dp"
+        android:layout_y="302dp"
+        android:text="Submit" />
+    <EditText
+        android:id="@+id/et2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_x="144dp"
+        android:layout_y="131dp"
+        android:ems="10"
+        android:inputType="textPassword" />
+</AbsoluteLayout>
+
+JAVA File:
+
+package com.example.loginvalidation;
+import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+public class MainActivity extends AppCompatActivity {
+    Button btn;
+    EditText e1,e2;
+    String s1,s2;
+    int c=0;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        btn=(Button)findViewById(R.id.b1);
+        e1=(EditText)findViewById(R.id.et1);
+        e2=(EditText)findViewById(R.id.et2);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                s1=e1.getText().toString();
+                s2=e2.getText().toString();
+                if(e1.length()>=5 && e2.length()>=5){
+                    if(s1.equals("omkar")&& s2.equals("omkar1234")){
+                        Toast.makeText(getApplicationContext(),"Login Successful",Toast.LENGTH_LONG).show();
+                    }
+                    else {
+                        c=c+1;
+                        Toast.makeText(getApplicationContext(),"Login Failed, attempts made:"+String.valueOf(c),Toast.LENGTH_SHORT).show();
+                    }}
+                else{
+                    Toast.makeText(getApplicationContext(),"Length must be greater than 5 ",Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
+}

@@ -1,0 +1,67 @@
+SENSORS:
+
+XML File:
+
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    />
+MainActicity.java
+
+package com.example.sensors;
+import android.graphics.Color;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorListener;
+import android.hardware.SensorManager;
+import android.os.Bundle;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+
+import java.util.Random;
+
+public class MainActivity extends AppCompatActivity implements SensorEventListener {
+    ConstraintLayout lay;
+    SensorManager sm;
+    Sensor mysenser;
+    long lastUpdate;
+    float x,y,z,last_x,last_y,last_z;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        lay = (ConstraintLayout)findViewById(R.id.layout);
+        sm = (SensorManager)getSystemService(SENSOR_SERVICE);
+        mysenser = sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        sm.registerListener(this, mysenser, SensorManager.SENSOR_DELAY_GAME);
+    }
+    public void onSensorChanged(SensorEvent event) {
+        long curTime = System.currentTimeMillis();
+        if((curTime - lastUpdate) > 100){
+            long diffTime = (curTime - lastUpdate);
+            lastUpdate = curTime;
+            x = event.values[0];
+            y = event.values[1];
+            z = event.values[2];
+            float speed = Math.abs(x+y+z - last_x - last_y - last_z) / diffTime * 10000;
+            if(speed > 1200){
+                Random rnd = new Random();
+                int color = Color.rgb(rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+                lay.setBackgroundColor(color);
+            }
+            last_x = x;
+            last_y = y;
+            last_z = z;
+        }
+    }
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+    }
+}
